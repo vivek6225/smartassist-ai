@@ -32,12 +32,10 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* New Chat */}
         <button className="mt-4 w-full h-9 bg-violet-500 hover:bg-violet-600 text-white text-sm rounded-md transition">
           + New Chat
         </button>
 
-        {/* Search */}
         <div className="mt-3 flex items-center h-9 px-3 gap-2
           border border-gray-300 dark:border-white/20
           rounded-md
@@ -45,8 +43,8 @@ const Sidebar = () => {
 
           <img
             src={assets.search_icon}
-            className="w-3.5 opacity-60"
-            style={{ filter: "invert(1)" }}
+            // Agar icon WHITE hai: Light mode mein invert karke black karega, dark mode mein normal (white) rakhega
+            className="w-3.5 opacity-60 invert dark:invert-0" 
             alt="search"
           />
 
@@ -54,11 +52,7 @@ const Sidebar = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search conversations"
-            className="
-              text-xs w-full outline-none bg-transparent
-              text-gray-900 dark:text-gray-100
-              placeholder-gray-400 dark:placeholder-gray-500
-            "
+            className="text-xs w-full outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
           />
         </div>
       </div>
@@ -73,46 +67,31 @@ const Sidebar = () => {
           .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
           .filter(chat =>
             chat.messages.length > 0
-              ? chat.messages[0].content
-                  .toLowerCase()
-                  .includes(search.toLowerCase())
+              ? chat.messages[0].content.toLowerCase().includes(search.toLowerCase())
               : chat.name.toLowerCase().includes(search.toLowerCase())
           )
           .map(chat => {
             const active = selectedChat?._id === chat._id;
-
             return (
               <div
                 key={chat._id}
                 onClick={() => setSelectedChat(chat)}
                 className={`group relative flex justify-between items-start px-3 py-2 rounded-md cursor-pointer transition
-                ${active
-                  ? "bg-white dark:bg-[#242424] shadow-sm"
-                  : "hover:bg-white dark:hover:bg-[#242424]"
-                }`}
+                ${active ? "bg-white dark:bg-[#242424] shadow-sm" : "hover:bg-white dark:hover:bg-[#242424]"}`}
               >
-                {/* Active indicator */}
-                {active && (
-                  <span className="absolute left-0 top-0 h-full w-1 bg-violet-500 rounded-r"></span>
-                )}
+                {active && <span className="absolute left-0 top-0 h-full w-1 bg-violet-500 rounded-r"></span>}
 
                 <div className="pl-2">
                   <p className="truncate text-sm font-medium text-gray-800 dark:text-gray-100">
-                    {chat.messages.length > 0
-                      ? chat.messages[0].content.slice(0, 36)
-                      : chat.name}
+                    {chat.messages.length > 0 ? chat.messages[0].content.slice(0, 36) : chat.name}
                   </p>
-                  <p className="text-[10px] text-gray-400">
-                    {moment(chat.updatedAt).fromNow()}
-                  </p>
+                  <p className="text-[10px] text-gray-400">{moment(chat.updatedAt).fromNow()}</p>
                 </div>
 
-                {/* Delete icon */}
                 <img
                   src={assets.bin_icon}
                   alt="delete"
-                  className="w-3 opacity-0 group-hover:opacity-60 transition"
-                  style={{ filter: "invert(1)" }}
+                  className="w-3 opacity-0 group-hover:opacity-60 transition invert dark:invert-0" 
                 />
               </div>
             );
@@ -123,18 +102,14 @@ const Sidebar = () => {
       <div className="px-4 py-3 border-t border-gray-200 dark:border-white/10 bg-white dark:bg-[#1f1f1f]">
         <div
           onClick={() => navigate("/community")}
-          className="flex items-center gap-2 h-9 px-3 rounded-md cursor-pointer
-          hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition"
+          className="flex items-center gap-2 h-9 px-3 rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-[#2a2a2a] transition"
         >
           <img
             src={assets.gallery_icon}
-            className="w-4 opacity-60"
-            style={{ filter: "invert(1)" }}
+            className="w-4 opacity-60 invert dark:invert-0"
             alt="gallery"
           />
-          <p className="text-sm text-gray-700 dark:text-gray-200">
-            Community Images
-          </p>
+          <p className="text-sm text-gray-700 dark:text-gray-200">Community Images</p>
         </div>
       </div>
 
@@ -144,8 +119,7 @@ const Sidebar = () => {
           <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-200">
             <img
               src={assets.theme_icon}
-              className="w-4"
-              style={{ filter: "invert(1)" }}
+              className="w-4 invert dark:invert-0"
               alt="theme"
             />
             <p>Dark Mode</p>
@@ -156,9 +130,7 @@ const Sidebar = () => {
               type="checkbox"
               className="sr-only peer"
               checked={theme === "dark"}
-              onChange={() =>
-                setTheme(theme === "dark" ? "light" : "dark")
-              }
+              onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
             />
             <div className="w-9 h-5 bg-gray-400 rounded-full peer-checked:bg-violet-600 transition-all"></div>
             <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform peer-checked:translate-x-4"></span>
