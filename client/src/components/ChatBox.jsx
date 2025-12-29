@@ -8,7 +8,7 @@ const ChatBox = () => {
     const [messages, setMessages] = useState([])
 
     useEffect(() => {
-        // Debugging ke liye: console mein check karein data aa raha hai ya nahi
+        
         console.log("Selected Chat Data:", selectedChat);
         if (selectedChat && selectedChat.messages) {
             setMessages(selectedChat.messages)
@@ -28,7 +28,7 @@ const ChatBox = () => {
                             <img src={assets.logo} alt="Logo" className='w-12 h-12' /> 
                             <div className='text-left'>
                                 <h2 className='text-3xl font-bold text-gray-900 dark:text-white leading-none'>SmartAssist</h2>
-                                <p className='text-[11px] font-bold uppercase text-violet-600 mt-1'> Smart AI Assistant</p>
+                    <p className='text-[15px] font-bold text-violet-600 mt-1'> Smart AI Assistant</p>
                             </div>
                         </div>
                         <h1 className='text-4xl md:text-6xl font-bold text-gray-400 dark:text-white'>Ask me anything.</h1>
@@ -36,9 +36,9 @@ const ChatBox = () => {
                 ) : (
                     
                     <div className='flex flex-col items-start w-full pt-10'>
-                        {messages.map((msg, index) => (
+                        {messages.map((msg, index) => 
                             <Message key={index} message={msg} />
-                        ))}
+                        )}
                     </div>
                 )}
             </div>
