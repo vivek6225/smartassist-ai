@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { assets } from '../assets/assets'
 import { useAppContext } from '../context/AppContext'
 import Message from './Message';
 
 const ChatBox = () => {
+
+  const containerRef = useRef(null)
   const { selectedChat } = useAppContext();
 
   const [messages, setMessages] = useState([]);
@@ -15,6 +17,7 @@ const ChatBox = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    // Yahan aapka logic aayega
   }
 
   useEffect(() => {
@@ -25,10 +28,20 @@ const ChatBox = () => {
     }
   }, [selectedChat]);
 
-  return (
-    <div className='flex-1 flex flex-col m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40 h-[90vh]'>
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      })
+    }
+  }, [messages, loading]); // Loading par bhi scroll hona chahiye
 
-      <div className='flex-1 overflow-y-auto scrollbar-hide'>
+  return (
+    <div className='flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40 h-[90vh]'>
+
+      {/* Chat message - scrollbar-hide add kiya taaki ganda na dikhe */}
+      <div ref={containerRef} className='flex-1 mb-5 overflow-y-scroll scrollbar-hide'>
 
         {messages.length === 0 ? (
           <div className='h-full flex flex-col items-center justify-center'>
@@ -39,7 +52,7 @@ const ChatBox = () => {
                 <p className='text-[15px] font-bold text-violet-600 mt-1'> Smart AI Assistant</p>
               </div>
             </div>
-            <h1 className='text-4xl md:text-6xl font-bold text-gray-400 dark:text-white'>Ask me anything.</h1>
+            <h1 className='text-4xl md:text-6xl font-bold text-gray-400 dark:text-zinc-600'>Ask me anything.</h1>
           </div>
         ) : (
           <div className='flex flex-col items-start w-full pt-10'>
@@ -48,7 +61,7 @@ const ChatBox = () => {
             )}
 
             {loading && (
-              <div className='loader flex items-center gap-1'>
+              <div className='loader flex items-center gap-1 pl-10 my-2'>
                 <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce'></div>
                 <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce'></div>
                 <div className='w-1.5 h-1.5 rounded-full bg-gray-500 dark:bg-white animate-bounce'></div>
@@ -58,11 +71,23 @@ const ChatBox = () => {
         )}
       </div>
 
-      {/* prompt Input message */}
-      <form onSubmit={onSubmit} className='bg-primary/20 dark:bg-[#583C79]/30 border border-primary dark:border-[#80609F]/30 rounded-full w-full max-w-2xl p-3 pl-4 mx-auto flex gap-4 items-center'>
-        <select onChange={(e) => setMode(e.target.value)} value={mode} className='text-sm pl-3 pr-2 outline-none'>
-          <option className='dark:bg-purple-900' value="text">Text</option>
-          <option className='dark:bg-purple-900' value="image">Image</option>
+      {mode === 'image' && (
+        <label className='inline-flex items-center gap-2 mb-3 text-sm mx-auto dark:text-white'>
+          <p className='text-xs'>Publish Generated Image to Community</p>
+          <input type="checkbox" className='cursor-pointer' checked={isPublished}
+            onChange={(e) => setIsPublished(e.target.checked)} />
+        </label>
+      )}
+
+      {/* prompt Input message - Fixed background and text colors */}
+      <form onSubmit={onSubmit} className='bg-white dark:bg-[#2c1a3a] border border-primary dark:border-[#80609F]/30 rounded-full w-full max-w-2xl p-2 pl-4 mx-auto flex gap-4 items-center shadow-md'>
+        <select 
+          onChange={(e) => setMode(e.target.value)} 
+          value={mode} 
+          className='text-sm pl-3 pr-2 outline-none bg-transparent dark:text-white cursor-pointer'
+        >
+          <option value="text" className='text-black'>Text</option>
+          <option value="image" className='text-black'>Image</option>
         </select>
 
         <input
@@ -70,12 +95,13 @@ const ChatBox = () => {
           value={prompt}
           type="text"
           placeholder='Type your prompt here..'
-          className='flex-1 w-full text-sm outline-none'
+          className='flex-1 w-full text-sm outline-none bg-transparent dark:text-white'
           required
         />
 
-        <button disabled={loading}>
-          <img src={loading ? assets.stop_icon : assets.send_icon} className='w-8 cursor-pointer' alt="" />
+        <button type="submit" disabled={loading} className='flex-shrink-0'>
+          {/* Send icon ko dark mode mein invert kiya taaki dikhe */}
+          <img src={loading ? assets.stop_icon : assets.send_icon} className={`w-8 cursor-pointer ${!loading && 'dark:invert'}`} alt="" />
         </button>
       </form>
 
