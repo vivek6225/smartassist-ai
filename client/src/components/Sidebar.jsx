@@ -39,7 +39,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
             <h1 className="text-[15px] font-semibold text-gray-900 dark:text-gray-100">
               SmartAssist
             </h1>
-            <p className="text-xs font-medium bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">
+            <p className="text-xs font-medium bg-gradient-to-r from-purple-700 to-violet-500 bg-clip-text text-transparent">
               Smart AI Assistant
             </p>
           </div>

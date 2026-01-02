@@ -17,7 +17,7 @@ const ChatBox = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // Yahan aapka logic aayega
+   
   }
 
   useEffect(() => {
@@ -35,12 +35,12 @@ const ChatBox = () => {
         behavior: "smooth",
       })
     }
-  }, [messages, loading]); // Loading par bhi scroll hona chahiye
+  }, [messages, loading]); 
 
   return (
     <div className='flex-1 flex flex-col justify-between m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40 h-[90vh]'>
 
-      {/* Chat message - scrollbar-hide add kiya taaki ganda na dikhe */}
+      {/* Chat message */}
       <div ref={containerRef} className='flex-1 mb-5 overflow-y-scroll scrollbar-hide'>
 
         {messages.length === 0 ? (
@@ -52,7 +52,7 @@ const ChatBox = () => {
                 <p className='text-[15px] font-bold text-violet-600 mt-1'> Smart AI Assistant</p>
               </div>
             </div>
-            <h1 className='text-4xl md:text-6xl font-bold text-gray-400 dark:text-zinc-600'>Ask me anything.</h1>
+            <h1 className='text-4xl md:text-6xl font-bold text-gray-900 dark:text-zinc-600'>Ask me anything.</h1>
           </div>
         ) : (
           <div className='flex flex-col items-start w-full pt-10'>
@@ -79,7 +79,7 @@ const ChatBox = () => {
         </label>
       )}
 
-      {/* prompt Input message - Fixed background and text colors */}
+      {/* prompt Input message  */}
       <form onSubmit={onSubmit} className='bg-white dark:bg-[#2c1a3a] border border-primary dark:border-[#80609F]/30 rounded-full w-full max-w-2xl p-2 pl-4 mx-auto flex gap-4 items-center shadow-md'>
         <select 
           onChange={(e) => setMode(e.target.value)} 
@@ -100,7 +100,7 @@ const ChatBox = () => {
         />
 
         <button type="submit" disabled={loading} className='flex-shrink-0'>
-          {/* Send icon ko dark mode mein invert kiya taaki dikhe */}
+        
           <img src={loading ? assets.stop_icon : assets.send_icon} className={`w-8 cursor-pointer ${!loading && 'dark:invert'}`} alt="" />
         </button>
       </form>
